@@ -20,20 +20,21 @@ const slides = [
 	
 ];
 
+// Initialisation du numéro de l'image
+
 let number = 0;
 
 // Déclaration des constantes pour les éléments du DOM
 
 const bannerElement = document.querySelector("#banner");
+
 const imageElement = document.getElementById("img");
-//imageElement.src = slides.image;
 const textElement = document.getElementById("textbanner");
-//textElement.innerText = slides.tagline;
 const dotsElement = document.getElementById("dots");
 const arrowrightElement = document.getElementById("right");
 const arrowleftElement = document.getElementById("left");
 
-// Ajout des Event Listeners sur les flèches droite et gauche
+// Ajout un évenement clic sur la flèche droite et la flèche gauche
 
 arrowrightElement.addEventListener("click", () => changePicture(1));
 arrowleftElement.addEventListener("click", () => changePicture(-1));
@@ -61,8 +62,6 @@ function addBullet(){
 	}
 }
 
-
-
 // Appel de la fonction pour créer les dots au chargement de la page
 
 addBullet();
@@ -89,18 +88,9 @@ number += direction;
 	}
 	console.log(number);
 	updateSlide(number);
-	/*imageElement.src = `./assets/images/slideshow/${slides[position].image}`;
-	textElement.innerHTML = slides[position].tagLine;
-	dots.forEach(dot => {
-        if (dot.getAttribute('data-position') == number) {
-		dot.classList.add('dot_selected');
-        } else { dot.classList.remove('dot_selected');
-		}
-	});*/
 }
 
 // Sélection de tous les dots et ajout de l'événement "click"
-
 
 function selectDot() {
     dots.forEach((dot) => {
@@ -111,13 +101,10 @@ function selectDot() {
 			number = +position;
 			console.log(number);
 			updateSlide(position);
-			/*function updateSlide(position) {
-				imageElement.src = `./assets/images/slideshow/${slides[position].image}`;
-				textElement.innerHTML = slides[position].tagLine;
-				dots.forEach(dot => dot.classList.remove('dot_selected'));
-				dots[position].classList.add('dot_selected');
-			}*/
         });
     })
 }
+
+// appel de la fonction selectDot
+
 selectDot();
