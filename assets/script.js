@@ -1,3 +1,5 @@
+// Déclaration de la constante pour les slides
+
 const slides = [
 	{
 		"image":"slide1.jpg",
@@ -20,77 +22,102 @@ const slides = [
 
 let number = 0;
 
-// Récupération des éléments du DOM
+// Déclaration des constantes pour les éléments du DOM
 
 const bannerElement = document.querySelector("#banner");
-
 const imageElement = document.getElementById("img");
+//imageElement.src = slides.image;
 const textElement = document.getElementById("textbanner");
+//textElement.innerText = slides.tagline;
 const dotsElement = document.getElementById("dots");
+const arrowrightElement = document.getElementById("right");
+const arrowleftElement = document.getElementById("left");
 
 // Ajout des Event Listeners sur les flèches droite et gauche
 
-const arrowrightElement = document.getElementById("right");
 arrowrightElement.addEventListener("click", () => changePicture(1));
-
-const arrowleftElement = document.getElementById("left");
 arrowleftElement.addEventListener("click", () => changePicture(-1));
 
-// Rattachement des balises au parent bannerElement (#banner)
+// Rattachement des balises à l'élément parent bannerElement (#banner)
 
 bannerElement.appendChild(imageElement);
 bannerElement.appendChild(textElement);
 bannerElement.appendChild(arrowrightElement);
 bannerElement.appendChild(arrowleftElement);
 
-// Création des dots et mise en place du défilement infini
+// Fonction pour créer les dots et les ajouter au DOM
 
-function addBullet(number){
-	for(let i = 0 ; i < number ; i++) {
+function addBullet(){
+	for(let i = 0 ; i < slides.length; i++) {
 		
 		const dot = document.createElement("a");
 		dot.classList.add('dot');
 		dot.setAttribute('data-position', i);
 		if(i == 0){
-		dot.classList.add('dot_selected');	
+			dot.classList.add('dot_selected');	
 		}
 		dotsElement.appendChild(dot);	
 		
 	}
 }
 
-addBullet(slides.length);
 
+
+// Appel de la fonction pour créer les dots au chargement de la page
+
+addBullet();
+
+// Fonction pour mettre à jour l'image, le texte et la sélection de dot
+
+function updateSlide(position) {
+	imageElement.src = `./assets/images/slideshow/${slides[position].image}`;
+	textElement.innerHTML = slides[position].tagLine;
+	dots.forEach(dot => dot.classList.remove('dot_selected'));
+	dots[position].classList.add('dot_selected');
+}
 const dots = document.querySelectorAll('.dot');
 
+// Fonction pour changer l'image en fonction de la direction donnée
+
 function changePicture(direction) {
-    number+=direction;
+number += direction;
 	if (number < 0) {
 		number = slides.length - 1;
 	}
-	if (number > slides.length - 1) number = 0;
-	imageElement.src = "./assets/images/slideshow/" + slides[number].image;
-	textElement.innerHTML = slides[number].tagLine;
-
+	if (number > slides.length - 1){ 
+		number = 0; 
+	}
+	console.log(number);
+	updateSlide(number);
+	/*imageElement.src = `./assets/images/slideshow/${slides[position].image}`;
+	textElement.innerHTML = slides[position].tagLine;
 	dots.forEach(dot => {
-        dot.classList.remove('dot_selected');
         if (dot.getAttribute('data-position') == number) {
 		dot.classList.add('dot_selected');
-        }
-	});
+        } else { dot.classList.remove('dot_selected');
+		}
+	});*/
 }
+
+// Sélection de tous les dots et ajout de l'événement "click"
 
 
 function selectDot() {
     dots.forEach((dot) => {
-    dot.addEventListener('click', (event) => {
+		dot.addEventListener('click', (event) => {
+			console.log(number);
 			event.preventDefault();
 			const position = dot.getAttribute('data-position');
-			imageElement.src = `./assets/images/slideshow/${slides[position].image}`;
-			textElement.innerHTML = slides[position].tagLine;
-			dots.forEach((dot) => dot.classList.remove('dot_selected'));
-			dot.classList.add('dot_selected');
+			number = +position;
+			console.log(number);
+			updateSlide(position);
+			/*function updateSlide(position) {
+				imageElement.src = `./assets/images/slideshow/${slides[position].image}`;
+				textElement.innerHTML = slides[position].tagLine;
+				dots.forEach(dot => dot.classList.remove('dot_selected'));
+				dots[position].classList.add('dot_selected');
+			}*/
         });
-    });
+    })
 }
 selectDot();
